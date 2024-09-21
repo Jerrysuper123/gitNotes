@@ -1,6 +1,6 @@
 # gitNotes
 
-No significant differencet between git push and git push origin head
+## No significant differencet between git push and git push origin head
 `git push`: Pushes to the current branch’s upstream if it's already set up.
 
 `git push origin HEAD`: Pushes the current branch (HEAD) explicitly to the origin remote, regardless of whether an upstream is already set.
