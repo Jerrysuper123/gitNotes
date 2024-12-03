@@ -94,15 +94,25 @@ In summary, git fetch --all fetches changes from all remote repositories, while 
 
 # Git stash (stack somewhere temporarily)
 git stash: Stash changes in the working directory that are not ready to be committed.
+
 git stash push -m "message": Stash changes with a custom message describing the stash.
+
 git stash apply: Apply the most recently stashed changes to the working directory. The stash will still be available after applying.
+
 git stash apply stash@{n}: Apply a specific stash by its index number (n).
+
 git stash list: List all stashes along with their index numbers and descriptions.
+
 git stash show: Show the changes in the most recently stashed entry.
+
 git stash show -p: Show the patch representing the changes in the most recently stashed entry.
+
 git stash pop: Apply the most recently stashed changes to the working directory and remove the stash from the stash list.
+
 git stash drop: Discard the most recently stashed changes.
+
 git stash drop stash@{n}: Discard a specific stash by its index number (n).
+
 git stash clear: Remove all stashed entries.
 
 
