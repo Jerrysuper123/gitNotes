@@ -50,7 +50,7 @@ git push -u origin main
 
 
 
-The command git fetch --all in Git is used to retrieve all changes from all remote repositories.
+# The command git fetch --all in Git is used to retrieve all changes from all remote repositories.
 Here's what it does:
 Fetch: It contacts all remote repositories associated with your local repository and fetches any new branches or commits from them.
 Updates remote-tracking branches: After fetching, Git updates the remote-tracking branches (such as origin/master, origin/develop, etc.) in your local repository to reflect any changes in the remote repositories.
