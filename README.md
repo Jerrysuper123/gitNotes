@@ -1,5 +1,9 @@
 # gitNotes
 
+## How to see all remote branch
+git branch -r
+
+
 ##  git push origin head will auto set up origin branch while git push will trigger an error if origin branch does not exist
 `git push`: Pushes to the current branch’s upstream if it's already set up (default origin branch).
 - If not upstream branch is set up, there is will be error in the terminal.
