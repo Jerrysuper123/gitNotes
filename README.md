@@ -133,9 +133,9 @@ git checkout feature-jms-9.0
 git pull origin master
 ## Step 2: After the merge conflicts are resolved, stage the changes accordingly, commit the changes and push.
 git commit 
-git push origin HEAD
+git rebase --continue
 ## Step 3: Merge the updated pull request.
-
+git push --force
 
 # Git diff
 To use git diff to see the differences between two commits, you need to provide the commit hashes or references for the two commits you want to compare. The basic syntax for git diff between two commits is:
