@@ -124,6 +124,26 @@ git stash clear: Remove all stashed entries.
 # Git squash
 Git rebase -i head~3
 
+The above is more diffcult to operate as we need to change "pick" to "squash" for each of the commits.
+
+So use below instead, this squash top 5 commits and bring head to the squash commit
+```
+git reset --soft head~5 && git commit
+```
+
+What if we have a merged commit in between the 5 commits
+git log --oneline --graph, u will see
+```
+chacchen@chacchen-mac jms-maui-plugin % git log --oneline --graph
+* 5dad2xxx (HEAD -> JJ-236, origin/JJ-237, JJ-238-lastest-copy) add more comments
+* d641fxxx address comments
+*   77dfdxxx Pull request #938: JJ-259 Dynamic function - B
+|\  
+| * 9556fxxx JJ-260 Dynamic function - A
+|/  
+* 9a791xxx AJ-23665 dynamic function base
+```
+
 # Merge conflict
 This pull request has conflicts.
 You must resolve the conflicts by manually merging master into this branch. After the conflicts are resolved you will be able to merge the pull requ	est.
