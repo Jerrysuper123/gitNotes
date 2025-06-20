@@ -134,7 +134,7 @@ git reset --soft head~5 && git commit
 What if we have a merged commit in between the 5 commits
 git log --oneline --graph, u will see
 ```
-chacchen@chacchen-mac jms-maui-plugin % git log --oneline --graph
+me@mycomputer mine-repo % git log --oneline --graph
 * 5dad2xxx (HEAD -> JJ-236, origin/JJ-237, JJ-238-lastest-copy) add more comments
 * d641fxxx address comments
 *   77dfdxxx Pull request #938: JJ-259 Dynamic function - B
@@ -143,6 +143,182 @@ chacchen@chacchen-mac jms-maui-plugin % git log --oneline --graph
 |/  
 * 9a791xxx AJ-23665 dynamic function base
 ```
+
+You're absolutely right — and here's the **clear explanation**:
+
+### 🔥 BUT: It only counts **linear commits**, not merges
+
+`HEAD~5` means:
+
+* "The fifth commit before HEAD, following the **first parent** only"
+
+So if your history includes a **merge commit**, it will **skip over the second branch**.
+
+---
+
+### 🧠 Example:
+
+Suppose this is your history:
+
+```
+* A (HEAD)
+* B
+*   M (merge commit)
+|\  
+| * X
+| * Y
+|/  
+* C
+```
+
+* `A` and `B` are normal commits
+* `M` is a **merge commit**
+* `X` and `Y` are on a merged-in feature branch
+
+When you run:
+
+```bash
+git reset --soft HEAD~3
+```
+
+Git will walk the **first-parent path only**:
+
+```
+A → B → M → C
+```
+
+So:
+
+* `HEAD~1` is B
+* `HEAD~2` is M
+* `HEAD~3` is C
+
+It **does not count** `X` and `Y` because they are off the first-parent path.
+
+### ✅ What is a *linear commit history*?
+
+A **linear commit history** is a Git history where each commit has a **single parent**, and all commits form a **straight line** — no branching, no merging.
+
+#### Example of linear history:
+
+```
+A → B → C → D → E
+```
+
+Every commit is based directly on the one before it.
+
+* No merge commits (`M`)
+* Easy to follow and revert
+* Ideal for squashing
+
+---
+
+### ❌ What is *non-linear* history?
+
+A non-linear history includes **branches and merges**, like this:
+
+```
+A → B → C → M
+        \   /
+         D-E
+```
+
+* `D` and `E` were made on a side branch
+* `M` is a **merge commit** that combines them back
+* `M` has **two parents**, making it **non-linear**
+
+---
+
+### Why does it matter?
+
+| Type           | Pros                        | Cons                            |
+| -------------- | --------------------------- | ------------------------------- |
+| **Linear**     | Clean, easy to read/rebase  | Can lose context (who did what) |
+| **Non-linear** | Shows true development flow | Harder to squash or rebase      |
+
+---
+
+### When you need a linear history:
+
+* When preparing code for production or release
+* When submitting pull requests (e.g., via `squash and merge`)
+* When simplifying messy commit trails
+
+Great question! Let's revisit your commit history:
+
+```
+* A (HEAD)
+* B
+*   M (merge commit)
+|\  
+| * X
+| * Y
+|/  
+* C
+```
+
+Git represents commits as a **directed acyclic graph (DAG)**, but when you run `HEAD~5`, it **walks only the first-parent chain**.
+
+---
+
+### 🔍 What's the first-parent path?
+
+The **first parent** of a merge commit (`M`) is the branch **you merged *into*** — usually the mainline (e.g., `main` or `develop`).
+
+So if `M` was created by:
+
+```bash
+git checkout main
+git merge feature-branch
+```
+
+Then the first-parent path looks like:
+
+```
+A → B → M → C
+```
+
+Commits `X` and `Y` are on the **feature branch** and are not considered in the first-parent chain.
+
+---
+
+### 🧮 Now, what does `HEAD~5` mean?
+
+`HEAD~5` means:
+
+> Walk **5 commits backward**, following only the first parent each time.
+
+Let’s walk it step by step:
+
+| Step | Commit                                  |
+| ---- | --------------------------------------- |
+| 0    | A (`HEAD`)                              |
+| 1    | B                                       |
+| 2    | M (merge commit)                        |
+| 3    | C                                       |
+| 4    | ❌ *No more parents* — history ends here |
+
+---
+
+### ✅ So what's `HEAD~5`?
+
+**There is no `HEAD~5`** in this case — because the chain ends after 4 steps.
+
+---
+
+### 📌 Summary:
+
+In your history:
+
+* `HEAD~1` = B
+* `HEAD~2` = M
+* `HEAD~3` = C
+* `HEAD~4` = ❌ nothing — reached root
+* `HEAD~5` = ❌ **error**: "bad revision"
+
+> 💡 `X` and `Y` are **not** included in `~N` because they're **not on the first-parent chain**.
+
+
 
 # Merge conflict
 This pull request has conflicts.
